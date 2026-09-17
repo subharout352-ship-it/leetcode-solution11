@@ -1,0 +1,27 @@
+class Solution(object):
+    def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        slow = head
+        fast = head
+
+        # Find the meeting point
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+
+            if slow == fast:
+                break
+        else:
+            return None
+
+        # Find the start of the cycle
+        slow = head
+
+        while slow != fast:
+            slow = slow.next
+            fast = fast.next
+
+        return slow
