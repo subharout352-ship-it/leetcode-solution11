@@ -1,0 +1,25 @@
+class Solution(object):
+    def copyRandomList(self, head):
+        """
+        :type head: Node
+        :rtype: Node
+        """
+        if head is None:
+            return None
+
+        # Create copy of each node
+        old_to_new = {}
+
+        current = head
+        while current:
+            old_to_new[current] = Node(current.val)
+            current = current.next
+
+        # Connect next and random pointers
+        current = head
+        while current:
+            old_to_new[current].next = old_to_new.get(current.next)
+            old_to_new[current].random = old_to_new.get(current.random)
+            current = current.next
+
+        return old_to_new[head]
