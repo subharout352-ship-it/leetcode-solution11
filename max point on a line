@@ -1,0 +1,69 @@
+class Solution(object):
+    def maxPoints(self, points):
+        """
+        :type points: List[List[int]]
+        :rtype: int
+        """
+
+        n = len(points)
+
+        if n <= 2:
+            return n
+
+        def gcd(a, b):
+            while b:
+                a, b = b, a % b
+            return abs(a)
+
+        answer = 0
+
+        for i in range(n):
+            slopes = {}
+            same = 1
+
+            for j in range(i + 1, n):
+                x1 = points[i][0]
+                y1 = points[i][1]
+
+                x2 = points[j][0]
+                y2 = points[j][1]
+
+                dx = x2 - x1
+                dy = y2 - y1
+
+                if dx == 0 and dy == 0:
+                    same += 1
+                    continue
+
+                g = gcd(dx, dy)
+
+                dx = dx // g
+                dy = dy // g
+
+                # Make slope representation consistent
+                if dx < 0:
+                    dx = -dx
+                    dy = -dy
+
+                if dx == 0:
+                    dy = 1
+
+                if dy == 0:
+                    dx = 1
+
+                slope = (dy, dx)
+
+                if slope not in slopes:
+                    slopes[slope] = 0
+
+                slopes[slope] += 1
+
+            if slopes:
+                current = same + max(slopes.values())
+            else:
+                current = same
+
+            if current > answer:
+                answer = current
+
+        return answer
